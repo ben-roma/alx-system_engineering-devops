@@ -1,2 +1,2 @@
 #!/bin/bash
-read -r -d '' CRWAL << EOM
+telnet towel.blinkenlights.nl
