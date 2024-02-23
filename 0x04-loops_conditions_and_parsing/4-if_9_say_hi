@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 # Afficher 10 fois "Best School" en  while loop, et dire "Hi" a 9
 
 count=1
