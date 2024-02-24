@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
 # Display the PID and process name of processes whose name contain the word "bash"
 
-for pid in /proc/[0-9]*; do
-  if [ -f "$pid/comm" ]; then
-    comm=$(cat "$pid/comm")
-    if [[ $comm == *bash* ]]; then
-      echo "$(basename $pid) $comm"
-    fi
-  fi
-done
+pgrep -l bash
