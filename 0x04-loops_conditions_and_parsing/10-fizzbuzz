@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
-# Displays the time for 12 hours and 59 minutes
-hour=0
+# FizzBuzz script
 
-while [ $hour -le 12 ]
-do
-    echo "Hour: $hour"
-    minute=1
-    while [ $minute -le 59 ]
-    do
-        echo $minute
-        minute=$(( minute + 1 ))
-    done
-    hour=$(( hour + 1 ))
+for i in {1..100}; do
+    if (( i % 3 == 0 && i % 5 == 0 )); then
+        echo "FizzBuzz"
+    elif (( i % 3 == 0 )); then
+        echo "Fizz"
+    elif (( i % 5 == 0 )); then
+        echo "Buzz"
+    else
+        echo "$i"
+    fi
 done
