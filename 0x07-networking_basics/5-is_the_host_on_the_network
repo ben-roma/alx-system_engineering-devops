@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Vérifie si un argument a été fourni
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 {IP_ADDRESS}"
+    exit 1
+fi
+
+# Récupère l'adresse IP passée en argument
+IP_ADDRESS=$1
+
+# Ping l'adresse IP 5 fois
+ping -c 5 $IP_ADDRESS

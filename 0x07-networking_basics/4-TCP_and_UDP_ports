@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Affiche les sockets TCP en écoute et montre le PID et le nom du programme
+netstat -lp
