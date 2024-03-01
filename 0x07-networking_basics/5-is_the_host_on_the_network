@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
-#Host on the network
-
+# to ping the ip passed as an arg 5 times
 if [ $# -eq 0 ]; then
-    echo "Usage: $0 {IP_ADDRESS}"
-    exit 1
+	echo 'Usage: 5-is_the_host_on_the_network {IP_ADDRESS}'
+else
+	ping -c 5 "$1"
 fi
-
-# Récupère l'adresse IP passée en argument
-IP_ADDRESS=$1
-
-# Ping l'adresse IP 5 fois
-ping -c 5 $IP_ADDRESS
