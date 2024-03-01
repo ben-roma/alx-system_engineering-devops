@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#Host on the network
 # Vérifie si un argument a été fourni
 if [ $# -eq 0 ]; then
     echo "Usage: $0 {IP_ADDRESS}"
