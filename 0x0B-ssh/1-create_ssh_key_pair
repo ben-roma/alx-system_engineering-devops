@@ -1,0 +1,5 @@
+#!/bin/bash
+# Script to create an RSA key pair
+
+# Generate RSA key pair with 4096 bits, named 'school', with a passphrase
+ssh-keygen -t rsa -b 4096 -C "school" -N "betty" -f ./school
