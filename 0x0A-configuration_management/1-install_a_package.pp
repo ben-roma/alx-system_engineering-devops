@@ -1,11 +1,12 @@
-# Filename: 1-install_a_package.pp
-package { 'python3-pip':
-  ensure   => installed,
+# First ensure pip3 is installed
+exec { 'install-pip3':
+  command => '/usr/bin/apt-get install -y python3-pip',
+  unless  => 'dpkg -l | grep -qw python3-pip',
 }
 
-# Ensure Flask is installed at a specific version via pip
+# Install Flask via pip3
 exec { 'install-flask':
-  command     => 'pip3 install Flask==2.1.0',
-  unless      => 'pip3 freeze | grep Flask==2.1.0',
-  require     => Package['python3-pip'], # Ensures pip is installed first
+  command => '/usr/local/bin/pip3 install Flask==2.1.0',
+  unless  => '/usr/local/bin/pip3 freeze | grep -q "Flask==2.1.0"',
+  require => Exec['install-pip3'], # Ensure pip3 is installed before running this
 }
