@@ -1,5 +1,11 @@
 # Filename: 1-install_a_package.pp
-package { 'Flask':
-  ensure   => '2.1.0',                # Specifies the version of Flask to install
-  provider => 'pip3',                 # Specifies that pip3 should be used to install the package
+package { 'python3-pip':
+  ensure   => installed,
+}
+
+# Ensure Flask is installed at a specific version via pip
+exec { 'install-flask':
+  command     => 'pip3 install Flask==2.1.0',
+  unless      => 'pip3 freeze | grep Flask==2.1.0',
+  require     => Package['python3-pip'], # Ensures pip is installed first
 }
