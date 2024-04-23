@@ -1,28 +1,28 @@
 # 100-puppet_ssh_config.pp
+# Configures the SSH client to use a specific private key and disable password authentication
 
-# Ensure the .ssh directory exists
-file { '/home/ubuntu/.ssh':
-  ensure  => 'directory',
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0700',
+# Ensure the puppetlabs-stdlib module is installed:
+# puppet module install puppetlabs-stdlib
+
+file { '/etc/ssh/ssh_config':
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
 }
 
-# Manage the SSH configuration file
-file { '/home/ubuntu/.ssh/config':
-  ensure  => 'file',
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0600',
-  content => epp('ssh_config.epp'),
+# Declare the identity file used for SSH authentication
+file_line { 'Declare identity file':
+    path    => '/etc/ssh/ssh_config',
+    line    => 'IdentityFile ~/.ssh/school',
+    match   => '^IdentityFile',
+    replace => true,
 }
 
-# Manage the content of the SSH configuration with EPP template
-file { '/etc/puppetlabs/code/environments/production/modules/ssh_config.epp':
-  ensure  => 'file',
-  content => @("EOF"/L)
-    Host *
-      IdentityFile /home/ubuntu/.ssh/school
-      PasswordAuthentication no
-    | EOF
+# Turn off password authentication
+file_line { 'Turn off passwd auth':
+    path    => '/etc/ssh/ssh_config',
+    line    => 'PasswordAuthentication no',
+    match   => '^PasswordAuthentication',
+    replace => true,
 }
