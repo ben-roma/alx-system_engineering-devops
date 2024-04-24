@@ -1,7 +1,29 @@
 #!/usr/bin/env bash
-# Installs nginx server
+# Update system repositories
 apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
+
+# Install Nginx
+apt-get install nginx -y
+
+# Setup the HTML file and Nginx server block to serve the desired content
 echo "Hello World!" > /var/www/html/index.html
-service nginx start
+
+# Replace the default Nginx configuration to ensure correct response
+cat > /etc/nginx/sites-available/default <<EOF
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html;
+
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOF
+
+# Reload Nginx to apply the changes (we use 'reload' instead of 'restart' to avoid using systemctl)
+nginx -s reload
