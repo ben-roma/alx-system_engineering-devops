@@ -1,31 +1,24 @@
 #!/usr/bin/env bash
-# Script to install and configure Nginx on an Ubuntu server
+# Installs Nginx with the following configurations:
+#+    Listens on port 80.
+#+    Returns a page containing "Hello World!" when queried
+#++    at the root with a curl GET request.
 
-# Update the package list
-apt-get update
+sudo apt-get update
+sudo apt-get install -y nginx
 
-# Install Nginx without any interactive dialogue
-apt-get install -y nginx
+# allowing nginx on port 80
+sudo ufw allow 'Nginx HTTP'
 
-# Create a simple HTML file that will display 'Hello World!'
-echo "Hello World!" > /var/www/html/index.html
+# Give the user ownership to website files
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
 
-# Replace the default Nginx site configuration
-cat > /etc/nginx/sites-available/default <<EOF
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
+# Backup default index
+cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
 
-    root /var/www/html;
-    index index.html;
+# Creating new index
+echo -e "Hello World!" > /var/www/html/index.nginx-debian.html
 
-    server_name _;
-
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-}
-EOF
-
-# Reload Nginx configuration without using systemctl
-nginx -s reload
+# Restarting nginx
+sudo service nginx restart
