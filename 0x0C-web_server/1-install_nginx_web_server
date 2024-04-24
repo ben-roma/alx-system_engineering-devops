@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# Update system repositories
+# Script to install and configure Nginx on an Ubuntu server
+
+# Update the package list
 apt-get update
 
-# Install Nginx
-apt-get install nginx -y
+# Install Nginx without any interactive dialogue
+apt-get install -y nginx
 
-# Setup the HTML file and Nginx server block to serve the desired content
+# Create a simple HTML file that will display 'Hello World!'
 echo "Hello World!" > /var/www/html/index.html
 
-# Replace the default Nginx configuration to ensure correct response
+# Replace the default Nginx site configuration
 cat > /etc/nginx/sites-available/default <<EOF
 server {
     listen 80 default_server;
@@ -25,5 +27,5 @@ server {
 }
 EOF
 
-# Reload Nginx to apply the changes (we use 'reload' instead of 'restart' to avoid using systemctl)
+# Reload Nginx configuration without using systemctl
 nginx -s reload
