@@ -16,11 +16,12 @@ def top_ten(subreddit):
             "linux:0x16.api.advanced:v1.0.0\ (by /u/Large_Alternative_30)",
         }
         response = requests.get(url, headers=headers, allow_redirects=False)
-        if response.status_code == 200:
-            posts = response.json().get('data', {}).get('children', [])
-            for post in posts:
-                print(post.get('data', {}).get('title', 'None'))
-        else:
+        if (response.status_code == 404):
             print('None')
-    except requests.RequestException:
+            return 0
+        request = response.json().get('data').get('children')
+        for i in range(10):
+            print(request[i].get('data').get('title'))
+    except Exception:
         print('None')
+        return 0
