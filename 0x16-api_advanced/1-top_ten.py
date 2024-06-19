@@ -7,13 +7,13 @@ import requests
 
 
 def top_ten(subreddit):
-    """Return the title of the first 10 hot posts
-    listed for a given subreddit."""
+    '''Return the title of the first 10 hot posts
+    listed for a given subreddit'''
     try:
-        url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
+        url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
         headers = {
-            "User-Agent":
-            "linux:0x16.api.advanced:v1.0.0\ (by /u/Large_Alternative_30)",
+            "User-Agent": "linux:0x16.api.advanced:v1.0.0\
+            (by /u/Large_Alternative_30)",
         }
         response = requests.get(url, headers=headers, allow_redirects=False)
         if (response.status_code == 404):
