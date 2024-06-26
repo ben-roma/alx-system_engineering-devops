@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Configure Nginx pour rediriger /redirect_me vers une autre page
+
+# Met à jour les listes de paquets et installe nginx si ce n'est pas déjà fait
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Assure que nginx est démarré
+sudo service nginx start
+
+# Configuration de la redirection dans le fichier de configuration Nginx
+sudo sed -i '/server_name _;/a \ \n    location /redirect_me {\n        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n    }\n' /etc/nginx/sites-available/default
+
+# Recharge la configuration de nginx sans utiliser systemctl
+sudo nginx -s reload

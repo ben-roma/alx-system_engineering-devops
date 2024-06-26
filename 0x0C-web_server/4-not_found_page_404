@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Configure Nginx pour avoir une page 404 personnalisée
+
+# Met à jour les listes de paquets et installe nginx si ce n'est pas déjà fait
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Assure que nginx est démarré
+sudo service nginx start
+
+# Écriture du contenu de la page 404 personnalisée
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+# Configuration de nginx pour utiliser cette page 404
+sudo sed -i '/server_name _;/a \ \n    error_page 404 /404.html;\n    location = /404.html {\n        internal;\n    }\n' /etc/nginx/sites-available/default
+
+# Recharge la configuration de nginx sans utiliser systemctl
+sudo nginx -s reload
