@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Script to install and configure HAProxy on Ubuntu
+# Installer et configurer HAProxy sur lb-01
 
-# Update and install HAProxy
+# Mettre à jour les packages et installer HAProxy
 apt-get update
 apt-get install -y haproxy
 
-# Configure HAProxy
+# Configurer HAProxy
 cat <<EOF > /etc/haproxy/haproxy.cfg
 global
     log /dev/log    local0
@@ -37,5 +37,5 @@ backend http_back
     server web-02 35.175.64.140:80 check
 EOF
 
-# Restart HAProxy to apply changes
-systemctl restart haproxy
+# Redémarrer HAProxy pour appliquer les changements
+service haproxy restart
