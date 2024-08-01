@@ -1,39 +1,47 @@
-# Installe et configure Nginx avec Puppet
+# Manifeste Puppet pour installer et configurer Nginx
 
-class { 'nginx': }
+class nginx {
+  package { 'nginx':
+    ensure => installed,
+  }
 
-nginx::resource::server { 'default':
-  ensure      => present,
-  listen_port => 80,
-  server_name => ['_'],
-  proxy       => 'off',
-  location_cfg_append => {
-    'default_type' => 'text/html',
-    'alias' => '/var/www/html',
-  },
+  file { '/var/www/html/index.html':
+    ensure  => file,
+    content => "<html>
+<head>
+    <title>Welcome to Nginx!</title>
+</head>
+<body>
+    <h1>Hello World!</h1>
+</body>
+</html>",
+  }
+
+  file { '/var/www/html/404.html':
+    ensure  => file,
+    content => "<html>
+<head>
+    <title>404 Not Found</title>
+</head>
+<body>
+    <h1>Ceci n'est pas une page</h1>
+</body>
+</html>",
+  }
+
+  file { '/etc/nginx/sites-available/default':
+    ensure  => file,
+    content => template('nginx/default.erb'),
+    notify  => Service['nginx'],
+  }
+
+  service { 'nginx':
+    ensure    => running,
+    enable    => true,
+    subscribe => File['/etc/nginx/sites-available/default'],
+  }
 }
 
-file { '/var/www/html/index.html':
-  ensure  => file,
-  content => 'Hello World!',
-}
-
-file { '/var/www/html/404.html':
-  ensure  => file,
-  content => 'Ceci n\'est pas une page',
-}
-
-nginx::resource::location { '/redirect_me':
-  ensure      => present,
-  location    => '/redirect_me',
-  proxy       => 'off',
-  www_root    => '/var/www/html',
-  rewrite     => '^ /https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent',
-}
-
-service { 'nginx':
-  ensure     => running,
-  enable     => true,
-  hasrestart => true,
-  require    => File['/var/www/html/index.html'],
+node default {
+  include nginx
 }
