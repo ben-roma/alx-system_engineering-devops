@@ -1,18 +1,46 @@
 #!/usr/bin/env bash
-# Configure Nginx pour avoir une page 404 personnalisée
+# Configurer une page 404 personnalisée sur Nginx
 
-# Met à jour les listes de paquets et installe nginx si ce n'est pas déjà fait
-sudo apt-get update
-sudo apt-get install -y nginx
+# Mettre à jour les packages et installer Nginx
+apt-get update
+apt-get install -y nginx
 
-# Assure que nginx est démarré
-sudo service nginx start
+# Créer une page HTML personnalisée pour les erreurs 404
+cat <<EOF > /var/www/html/404.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found</title>
+</head>
+<body>
+    <h1>Ceci n'est pas une page</h1>
+</body>
+</html>
+EOF
 
-# Écriture du contenu de la page 404 personnalisée
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+# Configurer Nginx pour utiliser la page 404 personnalisée
+cat <<EOF > /etc/nginx/sites-available/default
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-# Configuration de nginx pour utiliser cette page 404
-sudo sed -i '/server_name _;/a \ \n    error_page 404 /404.html;\n    location = /404.html {\n        internal;\n    }\n' /etc/nginx/sites-available/default
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
 
-# Recharge la configuration de nginx sans utiliser systemctl
-sudo nginx -s reload
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+}
+EOF
+
+# Redémarrer Nginx pour appliquer les changements
+service nginx restart
