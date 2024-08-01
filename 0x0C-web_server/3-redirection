@@ -1,15 +1,30 @@
 #!/usr/bin/env bash
-# Configure Nginx pour rediriger /redirect_me vers une autre page
+# Configurer une redirection 301 sur Nginx
 
-# Met à jour les listes de paquets et installe nginx si ce n'est pas déjà fait
-sudo apt-get update
-sudo apt-get install -y nginx
+# Mettre à jour les packages et installer Nginx
+apt-get update
+apt-get install -y nginx
 
-# Assure que nginx est démarré
-sudo service nginx start
+# Configurer Nginx pour ajouter une redirection 301
+cat <<EOF > /etc/nginx/sites-available/default
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-# Configuration de la redirection dans le fichier de configuration Nginx
-sudo sed -i '/server_name _;/a \ \n    location /redirect_me {\n        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n    }\n' /etc/nginx/sites-available/default
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
 
-# Recharge la configuration de nginx sans utiliser systemctl
-sudo nginx -s reload
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+}
+EOF
+
+# Redémarrer Nginx pour appliquer les changements
+service nginx restart
