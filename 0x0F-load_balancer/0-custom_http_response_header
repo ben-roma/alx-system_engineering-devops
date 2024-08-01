@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Script to configure a new Ubuntu server to match the requirements for Nginx with a custom HTTP header
+# Configurer un nouveau serveur Ubuntu pour qu'il soit identique à web-01 et ajouter un en-tête HTTP personnalisé
 
-# Update and install Nginx
+# Mettre à jour les packages et installer Nginx
 apt-get update
 apt-get install -y nginx
 
-# Configure Nginx to include custom header
+# Configurer Nginx pour ajouter un en-tête HTTP personnalisé
 cat <<EOF > /etc/nginx/sites-available/default
 server {
     listen 80 default_server;
@@ -23,5 +23,5 @@ server {
 }
 EOF
 
-# Restart Nginx to apply changes
-systemctl restart nginx
+# Redémarrer Nginx pour appliquer les changements
+service nginx restart
