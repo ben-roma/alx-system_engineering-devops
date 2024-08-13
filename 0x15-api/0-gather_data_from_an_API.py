@@ -8,7 +8,7 @@ import sys
 if __name__ == "__main__":
 
     user_id = sys.argv[1]
-    
+
     try:
         user = requests.get(
             f"https://jsonplaceholder.typicode.com/users/{user_id}")
