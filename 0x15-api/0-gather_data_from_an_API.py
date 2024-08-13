@@ -7,24 +7,29 @@ import sys
 
 if __name__ == "__main__":
 
-    userId = sys.argv[1]
-    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-                        .format(userId))
+    user_id = sys.argv[1]
+    
+    try:
+        user = requests.get(
+            f"https://jsonplaceholder.typicode.com/users/{user_id}")
+        user.raise_for_status()
+        name = user.json().get('name')
 
-    name = user.json().get('name')
+        todos = requests.get(
+            f'https://jsonplaceholder.typicode.com/todos?userId={user_id}')
+        todos.raise_for_status()
+        todos_data = todos.json()
 
-    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
-    totalTasks = 0
-    completed = 0
+        total_tasks = len(todos_data)
+        completed_tasks = [
+            task for task in todos_data if task.get('completed')
+        ]
 
-    for task in todos.json():
-        if task.get('userId') == int(userId):
-            totalTasks += 1
-            if task.get('completed'):
-                completed += 1
+        print(f'Employee {name} is done with tasks({len(completed_tasks)}/'
+              f'{total_tasks}):')
+        for task in completed_tasks:
+            print(f"\t {task.get('title')}")
 
-    print('Employee {} is done with tasks({}/{}):'
-          .format(name, completed, totalTasks))
-
-    print('\n'.join(["\t " + task.get('title') for task in todos.json()
-          if task.get('userId') == int(userId) and task.get('completed')]))
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data: {e}")
+        sys.exit(1)
