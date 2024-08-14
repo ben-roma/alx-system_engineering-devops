@@ -1,7 +1,7 @@
 # Postmortem: The Day the Data Went Silent - A Data Import Saga
 
 ## Issue Summary
-On the morning of August 10th, 2024, from 09:00 AM to 11:30 AM (UTC+1), our data import process led to a significant disruption in our phone system. This incident impacted approximately 30% of our client data records, causing errors in customer information displays and preventing users from accessing certain services. The root cause was identified as a misconfiguration following a system update that altered the way data fields were processed.
+On the morning of May 16th, 2022, from 09:00 AM to 11:30 AM (UTC+1), our data import process led to a significant disruption in our phone system. This incident impacted approximately 30% of our client data records, causing errors in customer information displays and preventing users from accessing certain services. The root cause was identified as a misconfiguration following a system update that altered the way data fields were processed.
 
 ## Timeline
 - **00:00 AM (midnight)**: The data import system update was deployed successfully.
