@@ -1,47 +1,25 @@
-# Manifeste Puppet pour installer et configurer Nginx
+# File:   7-puppet_install_nginx_web_server.pp
+# Author: Alex Orland Arévalo Tribaldos
+# email:  <3915@holbertonschool.com>
 
-class nginx {
-  package { 'nginx':
-    ensure => installed,
-  }
+# Using Puppet| Install Nginx server, setup and configuration
 
-  file { '/var/www/html/index.html':
-    ensure  => file,
-    content => "<html>
-<head>
-    <title>Welcome to Nginx!</title>
-</head>
-<body>
-    <h1>Hello World!</h1>
-</body>
-</html>",
-  }
-
-  file { '/var/www/html/404.html':
-    ensure  => file,
-    content => "<html>
-<head>
-    <title>404 Not Found</title>
-</head>
-<body>
-    <h1>Ceci n'est pas une page</h1>
-</body>
-</html>",
-  }
-
-  file { '/etc/nginx/sites-available/default':
-    ensure  => file,
-    content => template('nginx/default.erb'),
-    notify  => Service['nginx'],
-  }
-
-  service { 'nginx':
-    ensure    => running,
-    enable    => true,
-    subscribe => File['/etc/nginx/sites-available/default'],
-  }
+package { 'nginx':
+  ensure => 'installed'
 }
 
-node default {
-  include nginx
+file { '/var/www/html/index.html':
+  content => 'Hello World',
+}
+
+file_line { 'redirection-301':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
+}
+
+service { 'nginx':
+  ensure  => running,
+  require => Package['nginx'],
 }
