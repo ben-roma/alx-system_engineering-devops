@@ -1,4 +1,5 @@
 # File:   7-puppet_install_nginx_web_server.pp
+# Install and configure Nginx to serve a page with "Hello World!" and set up a 301 redirection
 
 package { 'nginx':
   ensure => installed,
@@ -17,6 +18,7 @@ file_line { 'redirection-301':
 
 service { 'nginx':
   ensure    => running,
-  enable    => true,  # Assure que Nginx démarre au boot
-  require   => Package['nginx'],
+  enable    => true,
+  require   => [Package['nginx'], File['/var/www/html/index.html']],
+  subscribe => File['/var/www/html/index.html'],
 }
