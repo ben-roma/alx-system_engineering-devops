@@ -40,8 +40,3 @@ To apply the changes, use the provided Puppet scripts. The scripts will automati
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Author
-
-- **Your Name** - Initial work - [Your GitHub Username](https://github.com/yourusername)
-
