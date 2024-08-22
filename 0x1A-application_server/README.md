@@ -43,14 +43,14 @@ To set up the application server and deploy the application, follow these steps:
    ```sh
    git clone https://github.com/yourusername/0x1A-application-server.git
 
-2. Navigate to the project directory:
+2. **Navigate to the project directory**:
    ```sh
    cd 0x1A-application-server
 
-3. Run the setup script:
+3. **Run the setup script**:
    ```sh
    ./setup_server.sh
 
-4. Deploy the application:
+4. **Deploy the application**:
    ```sh
    ./deploy_application.sh
