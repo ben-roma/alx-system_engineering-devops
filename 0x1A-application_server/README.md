@@ -45,12 +45,12 @@ To set up the application server and deploy the application, follow these steps:
 
 2. Navigate to the project directory:
    ```sh
-cd 0x1A-application-server
+   cd 0x1A-application-server
 
 3. Run the setup script:
    ```sh
-./setup_server.sh
+   ./setup_server.sh
 
 4. Deploy the application:
    ```sh
-./deploy_application.sh
+   ./deploy_application.sh
